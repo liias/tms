@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -48,7 +49,7 @@ public class TaskIntegrationTest {
     @Test
     public void create() {
         TaskChange taskChange = createTaskChange().setTitle("wow");
-        TaskModel taskModel = taskController.create(taskChange);
+        TaskModel taskModel = taskController.create(taskChange, new MockHttpServletResponse());
         assertThat(taskModel.getTitle(), is(taskChange.getTitle()));
     }
 
@@ -105,7 +106,7 @@ public class TaskIntegrationTest {
 
     // returns task id
     private Long createTask(TaskChange taskChange) {
-        return taskController.create(taskChange).getId();
+        return taskController.create(taskChange, new MockHttpServletResponse()).getId();
     }
 
     private static TaskChange createTaskChange() {

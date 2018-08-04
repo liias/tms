@@ -11,18 +11,23 @@ import io.github.liias.tms.domain.model.TaskModel;
 import io.github.liias.tms.domain.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-@RequestMapping("/api/v1/tasks")
+@RequestMapping(TaskController.TASKS_API_PATH)
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TaskController {
+    static final String TASKS_API_PATH = "/api/v1/tasks";
+    private static final String FETCH_PATH = "/{taskId}";
     private final TaskService taskService;
 
     @RequestMapping(method = GET)
@@ -34,11 +39,20 @@ public class TaskController {
 
     @RequestMapping(method = POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskModel create(@RequestBody TaskChange taskChange) {
-        return taskService.create(toTaskModel(null, taskChange));
+    public TaskModel create(@RequestBody TaskChange taskChange, HttpServletResponse response) {
+        TaskModel taskModel = taskService.create(toTaskModel(null, taskChange));
+        response.setHeader(HttpHeaders.LOCATION, createPath(FETCH_PATH, taskModel.getId()));
+        return taskModel;
     }
 
-    @RequestMapping("/{taskId}")
+    private static String createPath(String path, Object... params) {
+        return UriComponentsBuilder
+                .fromUriString(TASKS_API_PATH + path)
+                .buildAndExpand(params)
+                .toUriString();
+    }
+
+    @RequestMapping(FETCH_PATH)
     public Task fetch(@PathVariable("taskId") long taskId) {
         return taskService.fetch(taskId)
                 .map(TaskController::toTask)
