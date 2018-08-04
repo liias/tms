@@ -1,8 +1,8 @@
 package io.github.liias.tms.domain.service;
 
 import io.github.liias.tms.domain.data.entity.TaskEntity;
-import io.github.liias.tms.domain.data.entity.TaskPriority;
-import io.github.liias.tms.domain.data.entity.TaskStatus;
+import io.github.liias.tms.domain.data.entity.TaskEntityPriority;
+import io.github.liias.tms.domain.data.entity.TaskEntityStatus;
 import io.github.liias.tms.domain.data.repository.TaskRepository;
 import io.github.liias.tms.domain.model.TaskModel;
 import org.junit.Before;
@@ -90,8 +90,8 @@ public class TaskServiceTest {
         taskEntity.setId(1L);
         taskEntity.setTitle("title");
         taskEntity.setDescription("description");
-        taskEntity.setPriority(TaskPriority.UNKNOWN);
-        taskEntity.setStatus(TaskStatus.NEW);
+        taskEntity.setPriority(TaskEntityPriority.UNKNOWN);
+        taskEntity.setStatus(TaskEntityStatus.NEW);
         return taskEntity;
     }
 

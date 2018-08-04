@@ -26,11 +26,11 @@ public class TaskEntity extends AuditedEntity {
 
     @Column(name = "PRIORITY", nullable = false)
     @Enumerated(EnumType.STRING)
-    private TaskPriority priority;
+    private TaskEntityPriority priority;
 
     @Column(name = "STATUS", nullable = false)
     @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+    private TaskEntityStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DUE_DATE")

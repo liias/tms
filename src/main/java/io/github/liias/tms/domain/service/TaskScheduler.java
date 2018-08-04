@@ -1,7 +1,7 @@
 package io.github.liias.tms.domain.service;
 
-import io.github.liias.tms.domain.data.entity.TaskPriority;
-import io.github.liias.tms.domain.data.entity.TaskStatus;
+import io.github.liias.tms.domain.data.entity.TaskEntityPriority;
+import io.github.liias.tms.domain.data.entity.TaskEntityStatus;
 import io.github.liias.tms.domain.model.TaskModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class TaskScheduler {
         return new TaskModel()
                 .setTitle("Scheduled task")
                 .setDescription("Scheduled task description")
-                .setPriority(TaskPriority.UNKNOWN)
-                .setStatus(TaskStatus.NEW);
+                .setPriority(TaskEntityPriority.UNKNOWN)
+                .setStatus(TaskEntityStatus.NEW);
     }
 }
