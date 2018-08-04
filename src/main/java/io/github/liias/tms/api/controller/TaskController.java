@@ -35,9 +35,8 @@ public class TaskController {
     }
 
     @RequestMapping(method = POST)
-    public long create(@RequestBody TaskChange taskChange) {
+    public TaskModel create(@RequestBody TaskChange taskChange) {
         return taskService.create(toTaskModel(null, taskChange));
-
     }
 
     @RequestMapping("/{taskId}")
@@ -48,8 +47,8 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/{taskId}", method = POST)
-    public void update(@PathVariable("taskId") long taskId, @RequestBody TaskChange taskChange) {
-        taskService.update(toTaskModel(taskId, taskChange));
+    public TaskModel update(@PathVariable("taskId") long taskId, @RequestBody TaskChange taskChange) {
+        return taskService.update(toTaskModel(taskId, taskChange));
     }
 
     @RequestMapping(value = "/{taskId}", method = DELETE)

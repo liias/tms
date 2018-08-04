@@ -46,7 +46,7 @@ public class TaskServiceTest {
     public void create() {
         TaskEntity taskEntity = createTaskEntity();
         when(mockTaskRepository.save(any())).thenReturn(taskEntity);
-        assertThat(taskService.create(createTaskModel()), is(taskEntity.getId()));
+        assertThat(taskService.create(createTaskModel()).getId(), is(taskEntity.getId()));
     }
 
     @Test
@@ -66,6 +66,7 @@ public class TaskServiceTest {
         TaskEntity oldTaskEntity = new TaskEntity();
         oldTaskEntity.setId(taskModel.getId());
         when(mockTaskRepository.findById(any())).thenReturn(Optional.of(oldTaskEntity));
+        when(mockTaskRepository.save(any())).thenReturn(oldTaskEntity);
 
         taskService.update(taskModel);
         ArgumentCaptor<TaskEntity> argument = ArgumentCaptor.forClass(TaskEntity.class);

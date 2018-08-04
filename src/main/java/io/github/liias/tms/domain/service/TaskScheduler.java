@@ -18,11 +18,16 @@ public class TaskScheduler {
     private final TaskService taskService;
 
     @Scheduled(fixedRate = SCHEDULED_TASK_INTERVAL_MS)
-    public long addScheduledTask() {
+    public void addScheduledTask() {
+        addScheduledTaskInner();
+    }
+
+    // extracted for testing purposes (and because scheduler method should return void)
+    public TaskModel addScheduledTaskInner() {
         TaskModel taskModel = createScheduledTask();
-        long taskId = taskService.create(taskModel);
-        log.info("Added scheduled task {}", taskId);
-        return taskId;
+        taskModel = taskService.create(taskModel);
+        log.info("Added scheduled task {}", taskModel.getId());
+        return taskModel;
     }
 
     private static TaskModel createScheduledTask() {

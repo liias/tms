@@ -29,11 +29,11 @@ public class TaskService {
     }
 
     @Transactional
-    public long create(TaskModel taskModel) {
+    public TaskModel create(TaskModel taskModel) {
         TaskEntity taskEntity = new TaskEntity();
         updateEntityFields(taskEntity, taskModel);
         taskEntity = taskRepository.save(taskEntity);
-        return taskEntity.getId();
+        return toModel(taskEntity);
     }
 
     @Transactional
@@ -43,12 +43,13 @@ public class TaskService {
     }
 
     @Transactional
-    public void update(TaskModel taskModel) {
+    public TaskModel update(TaskModel taskModel) {
         TaskEntity taskEntity = taskRepository.findById(taskModel.getId())
                 .orElseThrow(() -> new IllegalArgumentException("No task with id " + taskModel.getId() + " found"));
 
         updateEntityFields(taskEntity, taskModel);
-        taskRepository.save(taskEntity);
+        taskEntity = taskRepository.save(taskEntity);
+        return toModel(taskEntity);
     }
 
     @Transactional

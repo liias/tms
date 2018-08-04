@@ -6,7 +6,9 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TaskSchedulerTest {
     private TaskService mockTaskService;
@@ -21,6 +23,7 @@ public class TaskSchedulerTest {
 
     @Test
     public void addScheduledTask() {
+        when(mockTaskService.create(any())).thenReturn(new TaskModel());
         taskScheduler.addScheduledTask();
         ArgumentCaptor<TaskModel> argument = ArgumentCaptor.forClass(TaskModel.class);
         Mockito.verify(mockTaskService).create(argument.capture());

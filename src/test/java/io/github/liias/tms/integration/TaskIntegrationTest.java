@@ -5,6 +5,7 @@ import io.github.liias.tms.api.model.Task;
 import io.github.liias.tms.api.model.TaskChange;
 import io.github.liias.tms.domain.data.entity.TaskEntityPriority;
 import io.github.liias.tms.domain.data.entity.TaskEntityStatus;
+import io.github.liias.tms.domain.model.TaskModel;
 import io.github.liias.tms.domain.service.TaskScheduler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +35,7 @@ public class TaskIntegrationTest {
     @Test
     public void fetchAll() {
         TaskChange taskChange = createTaskChange();
-        long taskId = taskController.create(taskChange);
+        long taskId = taskController.create(taskChange).getId();
         List<Task> fetchAllResultFiltered = taskController.fetchAll().stream()
                 .filter(t -> t.getId().equals(taskId))
                 .collect(toList());
@@ -45,14 +46,15 @@ public class TaskIntegrationTest {
 
     @Test
     public void create() {
-        TaskChange taskChange = createTaskChange();
-        long taskId = taskController.create(taskChange);
+        TaskChange taskChange = createTaskChange().setTitle("wow");
+        TaskModel taskModel = taskController.create(taskChange);
+        assertThat(taskModel.getTitle(), is(taskChange.getTitle()));
     }
 
     @Test
     public void fetch() {
         TaskChange taskChange = createTaskChange();
-        long taskId = taskController.create(taskChange);
+        long taskId = taskController.create(taskChange).getId();
         Task result = taskController.fetch(taskId);
         assertThat(result.getId(), is(taskId));
         assertThat(result.getTitle(), is(taskChange.getTitle()));
@@ -61,7 +63,7 @@ public class TaskIntegrationTest {
     @Test
     public void update() {
         TaskChange taskChange = createTaskChange();
-        long taskId = taskController.create(taskChange);
+        long taskId = taskController.create(taskChange).getId();
 
         taskChange.setTitle("updated");
         taskController.update(taskId, taskChange);
@@ -72,7 +74,7 @@ public class TaskIntegrationTest {
     @Test
     public void delete() {
         TaskChange taskChange = createTaskChange();
-        long taskId = taskController.create(taskChange);
+        long taskId = taskController.create(taskChange).getId();
 
         taskController.delete(taskId);
         assertThat(taskController.fetch(taskId), is(nullValue()));
@@ -83,10 +85,10 @@ public class TaskIntegrationTest {
         int tasksCountBeforeTest = taskController.fetchAll().size();
 
         TaskChange taskChange = createTaskChange();
-        long manuallyAddedTaskId1 = taskController.create(taskChange);
-        long scheduledTaskId1 = taskScheduler.addScheduledTask();
-        long manuallyAddedTaskId2 = taskController.create(taskChange);
-        long scheduledTaskId2 = taskScheduler.addScheduledTask();
+        long manuallyAddedTaskId1 = taskController.create(taskChange).getId();
+        long scheduledTaskId1 = taskScheduler.addScheduledTaskInner().getId();
+        long manuallyAddedTaskId2 = taskController.create(taskChange).getId();
+        long scheduledTaskId2 = taskScheduler.addScheduledTaskInner().getId();
 
         // make sure updating will not effect ordering
         taskController.update(manuallyAddedTaskId1, taskChange.setTitle("updated"));
