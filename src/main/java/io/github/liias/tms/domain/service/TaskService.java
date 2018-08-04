@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static io.github.liias.tms.util.DateUtil.toDate;
 import static io.github.liias.tms.util.DateUtil.toLocalDateTime;
 import static java.util.stream.Collectors.toList;
 
@@ -58,6 +59,10 @@ public class TaskService {
     private static void updateEntityFields(TaskEntity taskEntity, TaskModel taskModel) {
         taskEntity.setTitle(taskModel.getTitle());
         taskEntity.setDescription(taskModel.getDescription());
+        taskEntity.setPriority(taskModel.getPriority());
+        taskEntity.setStatus(taskModel.getStatus());
+        taskEntity.setDueDate(toDate(taskModel.getDueDate()));
+        taskEntity.setResolvedAt(toDate(taskModel.getResolvedAt()));
     }
 
     private static TaskModel toModel(TaskEntity taskEntity) {
@@ -65,6 +70,10 @@ public class TaskService {
                 .setId(taskEntity.getId())
                 .setTitle(taskEntity.getTitle())
                 .setDescription(taskEntity.getDescription())
+                .setPriority(taskEntity.getPriority())
+                .setStatus(taskEntity.getStatus())
+                .setDueDate(toLocalDateTime(taskEntity.getDueDate()))
+                .setResolvedAt(toLocalDateTime(taskEntity.getResolvedAt()))
                 .setCreatedAt(toLocalDateTime(taskEntity.getCreatedAt()))
                 .setUpdatedAt(toLocalDateTime(taskEntity.getUpdatedAt()));
     }

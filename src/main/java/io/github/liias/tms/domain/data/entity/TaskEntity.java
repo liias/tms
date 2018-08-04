@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -22,4 +23,20 @@ public class TaskEntity extends AuditedEntity {
 
     @Column(name = "DESCRIPTION", length = 2000)
     private String description;
+
+    @Column(name = "PRIORITY", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority;
+
+    @Column(name = "STATUS", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DUE_DATE")
+    private Date dueDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "RESOLVED_AT")
+    private Date resolvedAt;
 }
