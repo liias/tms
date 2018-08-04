@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
-public class TaskControllerIntegrationTest {
+public class TaskIntegrationTest {
 
     @Autowired
     private TaskController taskController;
