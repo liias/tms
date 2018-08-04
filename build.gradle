@@ -1,0 +1,37 @@
+plugins {
+    id "java"
+    id "idea"
+
+    id "org.springframework.boot" version "2.0.4.RELEASE"
+
+    // handles gradle dependencies
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+group 'io.github.liias'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+bootJar {
+    baseName = "taskmanager"
+    version = "0.1.0"
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web"
+
+    annotationProcessor "org.projectlombok:lombok:1.18.2"
+    compileOnly 'org.projectlombok:lombok:1.18.2'
+
+    testCompile "junit:junit:4.12"
+    testCompile "org.hamcrest:hamcrest-junit:2.0.0.0"
+    testCompile "org.mockito:mockito-core:2.+"
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    // H2 is used for integration tests
+    testCompile "com.h2database:h2:1.4.197"
+}
