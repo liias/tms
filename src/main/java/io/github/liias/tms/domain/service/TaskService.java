@@ -3,6 +3,7 @@ package io.github.liias.tms.domain.service;
 import io.github.liias.tms.domain.data.entity.TaskEntity;
 import io.github.liias.tms.domain.data.repository.TaskRepository;
 import io.github.liias.tms.domain.model.TaskModel;
+import io.github.liias.tms.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class TaskService {
     @Transactional
     public TaskModel update(TaskModel taskModel) {
         TaskEntity taskEntity = taskRepository.findById(taskModel.getId())
-                .orElseThrow(() -> new IllegalArgumentException("No task with id " + taskModel.getId() + " found"));
+                .orElseThrow(() -> new ResourceNotFoundException("No task with id " + taskModel.getId() + " found"));
 
         updateEntityFields(taskEntity, taskModel);
         taskEntity = taskRepository.save(taskEntity);

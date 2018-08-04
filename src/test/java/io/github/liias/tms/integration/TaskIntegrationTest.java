@@ -7,6 +7,7 @@ import io.github.liias.tms.domain.data.entity.TaskEntityPriority;
 import io.github.liias.tms.domain.data.entity.TaskEntityStatus;
 import io.github.liias.tms.domain.model.TaskModel;
 import io.github.liias.tms.domain.service.TaskScheduler;
+import io.github.liias.tms.exception.ResourceNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -79,7 +81,13 @@ public class TaskIntegrationTest {
         long taskId = createTask(taskChange);
 
         taskController.delete(taskId);
-        assertThat(taskController.fetch(taskId), is(nullValue()));
+
+        try {
+            Task task = taskController.fetch(taskId);
+            fail("Task is not deleted: " + task);
+        } catch (ResourceNotFoundException e) {
+            // expected
+        }
     }
 
     @Test

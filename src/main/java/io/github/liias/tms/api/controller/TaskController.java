@@ -9,6 +9,7 @@ import io.github.liias.tms.domain.data.entity.TaskEntityPriority;
 import io.github.liias.tms.domain.data.entity.TaskEntityStatus;
 import io.github.liias.tms.domain.model.TaskModel;
 import io.github.liias.tms.domain.service.TaskService;
+import io.github.liias.tms.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -56,7 +57,7 @@ public class TaskController {
     public Task fetch(@PathVariable("taskId") long taskId) {
         return taskService.fetch(taskId)
                 .map(TaskController::toTask)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("No task with id " + taskId + " found"));
     }
 
     @RequestMapping(value = "/{taskId}", method = PUT)
