@@ -43,10 +43,7 @@ dependencyManagement {
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
-
-    // TODO: will switch to postgresql later
-    compile "com.h2database:h2:1.4.197"
-
+    runtime "org.postgresql:postgresql:42.2.4"
 
     annotationProcessor "org.projectlombok:lombok:"
     compileOnly "org.projectlombok:lombok:"
