@@ -45,7 +45,7 @@ public class TaskController {
                 .orElse(null);
     }
 
-    @RequestMapping(value = "/{taskId}", method = POST)
+    @RequestMapping(value = "/{taskId}", method = PUT)
     public TaskModel update(@PathVariable("taskId") long taskId, @RequestBody TaskChange taskChange) {
         return taskService.update(toTaskModel(taskId, taskChange));
     }
