@@ -7,3 +7,17 @@ services:
         JAR_FILE: "build/libs/tms-0.1.0.jar"
     ports:
       - 8080:8080
+  tms-db:
+    container_name: tms-db
+    image: postgres:10.4
+    volumes:
+      - tms-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=sample
+      - POSTGRES_USER=sample
+      - POSTGRES_DB=sample
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+volumes:
+  tms-db-data: {}
