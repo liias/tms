@@ -5,6 +5,7 @@ import io.github.liias.tms.api.model.Task;
 import io.github.liias.tms.api.model.TaskChange;
 import io.github.liias.tms.domain.data.entity.TaskEntityPriority;
 import io.github.liias.tms.domain.data.entity.TaskEntityStatus;
+import io.github.liias.tms.domain.service.TaskScheduler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class TaskIntegrationTest {
 
     @Autowired
     private TaskController taskController;
+
+    @Autowired
+    private TaskScheduler taskScheduler;
 
     @Test
     public void fetchAll() {
@@ -72,6 +76,27 @@ public class TaskIntegrationTest {
 
         taskController.delete(taskId);
         assertThat(taskController.fetch(taskId), is(nullValue()));
+    }
+
+    @Test
+    public void shouldKeepScheduledAndManuallyAddedTasksInOrder() {
+        int tasksCountBeforeTest = taskController.fetchAll().size();
+
+        TaskChange taskChange = createTaskChange();
+        long manuallyAddedTaskId1 = taskController.create(taskChange);
+        long scheduledTaskId1 = taskScheduler.addScheduledTask();
+        long manuallyAddedTaskId2 = taskController.create(taskChange);
+        long scheduledTaskId2 = taskScheduler.addScheduledTask();
+
+        // make sure updating will not effect ordering
+        taskController.update(manuallyAddedTaskId1, taskChange.setTitle("updated"));
+
+        List<Task> tasks = taskController.fetchAll();
+        List<Long> returnedTaskIds = tasks.subList(tasksCountBeforeTest, tasks.size()).stream()
+                .map(Task::getId)
+                .collect(toList());
+
+        assertThat(returnedTaskIds, contains(manuallyAddedTaskId1, scheduledTaskId1, manuallyAddedTaskId2, scheduledTaskId2));
     }
 
     private static TaskChange createTaskChange() {

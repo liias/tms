@@ -20,10 +20,10 @@ import static java.util.stream.Collectors.toList;
 public class TaskService {
     private final TaskRepository taskRepository;
 
-    // fetch all tasks (ordered)
+    // fetch all tasks (ordered by creation time)
     @Transactional
     public List<TaskModel> fetchAll() {
-        return taskRepository.findAll().stream()
+        return taskRepository.findAllByOrderByCreatedAtAsc().stream()
                 .map(TaskService::toModel)
                 .collect(toList());
     }

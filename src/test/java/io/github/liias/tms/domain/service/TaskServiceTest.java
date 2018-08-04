@@ -34,11 +34,11 @@ public class TaskServiceTest {
 
     @Test
     public void fetchAll() {
-        when(mockTaskRepository.findAll()).thenReturn(new ArrayList<>());
+        when(mockTaskRepository.findAllByOrderByCreatedAtAsc()).thenReturn(new ArrayList<>());
         assertThat(taskService.fetchAll(), is(empty()));
 
         TaskEntity taskEntity = createTaskEntity();
-        when(mockTaskRepository.findAll()).thenReturn(Stream.of(taskEntity).collect(toList()));
+        when(mockTaskRepository.findAllByOrderByCreatedAtAsc()).thenReturn(Stream.of(taskEntity).collect(toList()));
         assertThat(taskService.fetchAll(), contains(createTaskModel(taskEntity)));
     }
 
