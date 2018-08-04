@@ -6,6 +6,8 @@ plugins {
 
     // handles gradle dependencies
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
+
+    id "com.palantir.docker" version "0.20.1"
 }
 
 group "io.github.liias"
@@ -21,6 +23,14 @@ repositories {
 bootJar {
     baseName = "tms"
     version = "0.1.0"
+}
+
+docker {
+    dependsOn build as Task
+    // e.g io.github.liias/tms
+    name "${project.group}/${bootJar.baseName}"
+    files bootJar.archivePath
+    buildArgs(["JAR_FILE": "${bootJar.archiveName}"])
 }
 
 // spring dependency management also allows to define library versions once
