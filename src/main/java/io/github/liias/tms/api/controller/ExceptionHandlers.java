@@ -14,7 +14,7 @@ import java.io.IOException;
 public class ExceptionHandlers extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({EmptyResultDataAccessException.class, ResourceNotFoundException.class})
-    public void handleIllegalArgumentException(HttpServletResponse response) throws IOException {
+    public void handleNotFoundException(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value());
     }
 }
