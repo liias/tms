@@ -103,6 +103,8 @@ public class TaskServiceTest {
         return new TaskModel()
                 .setId(taskEntity.getId())
                 .setTitle(taskEntity.getTitle())
-                .setDescription(taskEntity.getDescription());
+                .setDescription(taskEntity.getDescription())
+                .setPriority(taskEntity.getPriority())
+                .setStatus(taskEntity.getStatus());
     }
 }
