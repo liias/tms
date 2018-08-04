@@ -48,7 +48,7 @@ public class TaskIntegrationTest {
     @Test
     public void create() {
         TaskChange taskChange = createTaskChange().setTitle("wow");
-        TaskModel taskModel = taskController.create(taskChange).getBody();
+        TaskModel taskModel = taskController.create(taskChange);
         assertThat(taskModel.getTitle(), is(taskChange.getTitle()));
     }
 
@@ -105,7 +105,7 @@ public class TaskIntegrationTest {
 
     // returns task id
     private Long createTask(TaskChange taskChange) {
-        return taskController.create(taskChange).getBody().getId();
+        return taskController.create(taskChange).getId();
     }
 
     private static TaskChange createTaskChange() {
