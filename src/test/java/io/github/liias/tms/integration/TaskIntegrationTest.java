@@ -35,7 +35,8 @@ public class TaskIntegrationTest {
     @Test
     public void fetchAll() {
         TaskChange taskChange = createTaskChange();
-        long taskId = taskController.create(taskChange).getId();
+        long taskId = createTask(taskChange);
+
         List<Task> fetchAllResultFiltered = taskController.fetchAll().stream()
                 .filter(t -> t.getId().equals(taskId))
                 .collect(toList());
@@ -47,14 +48,14 @@ public class TaskIntegrationTest {
     @Test
     public void create() {
         TaskChange taskChange = createTaskChange().setTitle("wow");
-        TaskModel taskModel = taskController.create(taskChange);
+        TaskModel taskModel = taskController.create(taskChange).getBody();
         assertThat(taskModel.getTitle(), is(taskChange.getTitle()));
     }
 
     @Test
     public void fetch() {
         TaskChange taskChange = createTaskChange();
-        long taskId = taskController.create(taskChange).getId();
+        long taskId = createTask(taskChange);
         Task result = taskController.fetch(taskId);
         assertThat(result.getId(), is(taskId));
         assertThat(result.getTitle(), is(taskChange.getTitle()));
@@ -63,7 +64,7 @@ public class TaskIntegrationTest {
     @Test
     public void update() {
         TaskChange taskChange = createTaskChange();
-        long taskId = taskController.create(taskChange).getId();
+        long taskId = createTask(taskChange);
 
         taskChange.setTitle("updated");
         taskController.update(taskId, taskChange);
@@ -74,7 +75,7 @@ public class TaskIntegrationTest {
     @Test
     public void delete() {
         TaskChange taskChange = createTaskChange();
-        long taskId = taskController.create(taskChange).getId();
+        long taskId = createTask(taskChange);
 
         taskController.delete(taskId);
         assertThat(taskController.fetch(taskId), is(nullValue()));
@@ -85,9 +86,9 @@ public class TaskIntegrationTest {
         int tasksCountBeforeTest = taskController.fetchAll().size();
 
         TaskChange taskChange = createTaskChange();
-        long manuallyAddedTaskId1 = taskController.create(taskChange).getId();
+        long manuallyAddedTaskId1 = createTask(taskChange);
         long scheduledTaskId1 = taskScheduler.addScheduledTaskInner().getId();
-        long manuallyAddedTaskId2 = taskController.create(taskChange).getId();
+        long manuallyAddedTaskId2 = createTask(taskChange);
         long scheduledTaskId2 = taskScheduler.addScheduledTaskInner().getId();
 
         // make sure updating will not effect ordering
@@ -99,6 +100,12 @@ public class TaskIntegrationTest {
                 .collect(toList());
 
         assertThat(returnedTaskIds, contains(manuallyAddedTaskId1, scheduledTaskId1, manuallyAddedTaskId2, scheduledTaskId2));
+    }
+
+
+    // returns task id
+    private Long createTask(TaskChange taskChange) {
+        return taskController.create(taskChange).getBody().getId();
     }
 
     private static TaskChange createTaskChange() {

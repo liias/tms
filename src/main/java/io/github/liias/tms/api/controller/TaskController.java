@@ -11,6 +11,8 @@ import io.github.liias.tms.domain.model.TaskModel;
 import io.github.liias.tms.domain.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,8 +37,9 @@ public class TaskController {
     }
 
     @RequestMapping(method = POST)
-    public TaskModel create(@RequestBody TaskChange taskChange) {
-        return taskService.create(toTaskModel(null, taskChange));
+    public ResponseEntity<TaskModel> create(@RequestBody TaskChange taskChange) {
+        TaskModel taskModel = taskService.create(toTaskModel(null, taskChange));
+        return new ResponseEntity<>(taskModel, HttpStatus.CREATED);
     }
 
     @RequestMapping("/{taskId}")
