@@ -1,0 +1,9 @@
+version: '3'
+services:
+  tms-web:
+    build:
+      context: .
+      args:
+        JAR_FILE: "build/libs/tms-0.1.0.jar"
+    ports:
+      - 8080:8080
