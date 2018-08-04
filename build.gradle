@@ -7,8 +7,9 @@ plugins {
     // handles gradle dependencies
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
 }
-group 'io.github.liias'
-version '1.0-SNAPSHOT'
+
+group "io.github.liias"
+version "1.0-SNAPSHOT"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -18,8 +19,15 @@ repositories {
 }
 
 bootJar {
-    baseName = "taskmanager"
+    baseName = "tms"
     version = "0.1.0"
+}
+
+// spring dependency management also allows to define library versions once
+dependencyManagement {
+    dependencies {
+        dependency "org.projectlombok:lombok:1.18.2"
+    }
 }
 
 dependencies {
@@ -30,10 +38,11 @@ dependencies {
     compile "com.h2database:h2:1.4.197"
 
 
-    annotationProcessor "org.projectlombok:lombok:1.18.2"
-    compileOnly 'org.projectlombok:lombok:1.18.2'
+    annotationProcessor "org.projectlombok:lombok:"
+    compileOnly "org.projectlombok:lombok:"
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.2'
+    testAnnotationProcessor "org.projectlombok:lombok:"
+    testCompileOnly "org.projectlombok:lombok:"
     testCompile "junit:junit:4.12"
     testCompile "org.hamcrest:hamcrest-junit:2.0.0.0"
     testCompile "org.mockito:mockito-core:2.+"
