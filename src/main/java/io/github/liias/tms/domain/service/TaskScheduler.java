@@ -28,7 +28,7 @@ public class TaskScheduler {
         return new TaskModel()
                 .setTitle("Scheduled task")
                 .setDescription("Scheduled task description")
-                .setPriority(TaskEntityPriority.UNKNOWN)
+                .setPriority(TaskEntityPriority.GENERATED)
                 .setStatus(TaskEntityStatus.NEW);
     }
 }
