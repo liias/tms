@@ -6,16 +6,18 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Setter
 @Getter
 @Entity
 @Table(name = "TASK")
 public class TaskEntity extends AuditedEntity {
-    private static final String SQ_TASK_ID = "SQ_TASK_ID";
+    private static final String SQ_TASK_ID_GENERATOR = "SQ_TASK_ID_GENERATOR";
 
     @Id
-    @GeneratedValue(generator = SQ_TASK_ID)
-    @SequenceGenerator(name = SQ_TASK_ID, sequenceName = SQ_TASK_ID)
+    @GeneratedValue(strategy = SEQUENCE, generator = SQ_TASK_ID_GENERATOR)
+    @SequenceGenerator(name = SQ_TASK_ID_GENERATOR, sequenceName = "SQ_TASK_ID")
     private Long id;
 
     @Column(name = "TITLE", length = 200, nullable = false)
