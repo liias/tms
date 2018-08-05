@@ -1,0 +1,33 @@
+### Fetch tasks
+GET http://localhost:8080/api/v1/tasks
+
+### Fetch one task
+GET http://localhost:8080/api/v1/tasks/1
+
+### Add new task
+POST http://localhost:8080/api/v1/tasks
+Content-Type: application/json
+
+{
+  "title": "title",
+  "description": "description",
+  "priorityCode": "UNKNOWN",
+  "statusCode": "NEW",
+  "dueDate": [ 2019, 8, 5, 18, 43, 8,126000000]
+}
+
+### Update existing task
+PUT http://localhost:8080/api/v1/tasks/1
+Content-Type: application/json
+
+{
+  "title": "titlenew",
+  "description": "description",
+  "priorityCode": "UNKNOWN",
+  "statusCode": "NEW"
+}
+
+### Delete existing task
+DELETE http://localhost:8080/api/v1/tasks/1
+
+###
